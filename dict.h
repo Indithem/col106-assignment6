@@ -5,8 +5,51 @@
 #include <fstream>
 using namespace std;
 
+constexpr unsigned WordsDict_BUCKET = 2500;
+constexpr unsigned seed = 250053465;
+
+int unsigned murmurhash(const std::string&);
+
+//nodes for linked list in WordsDict
+struct Node{
+    Node* next=nullptr;
+    std::string name;
+    unsigned count=0;
+    Node(std::string&);
+};
+
+//a normal hashtable
+class WordsDict{
+public:
+    vector<Node*> data;
+
+public:
+    WordsDict();
+    void insert(std::string&);
+    void increment(std::string&);
+    void dump(std::string&);
+    unsigned get_count(std::string&);
+    ~WordsDict();
+};
+
+//this will contain instances of WordsDict
+class MainDict{
+private:
+    vector<WordsDict*> data;
+
+public:
+    MainDict();
+    void insert(std::string&);
+    void increment(std::string&);
+    void dump(std::string&);
+    unsigned get_count(std::string&);
+    ~MainDict();
+};
+
 class Dict {
 private:
+    MainDict dictionary;
+    const std::string seperator =  " .,-:!\"\'()?—[]“”‘’˙;@"; 
     // You can add attributes/helper functions here
 
 public: 
