@@ -1,5 +1,5 @@
 import nltk
-nltk.download('words')
+# nltk.download('words')
 from nltk.corpus import words
 
 # Get the English words and convert them to lowercase
@@ -11,16 +11,39 @@ import mmh3
 
 word_distribution = defaultdict(int)
 
+
+BUCKET_SIZE=2500
+
+buckets={
+    3:1,
+    4:2,
+    5:3,
+    6:4,
+    7:5,
+    8:5,
+    9:5,
+    10:5,
+    11:4,
+    12:2,
+    13:1,
+    14:1,
+    15:1,
+    16:1,
+    17:1
+}
+
 # Iterate through the word list
 for word in english_words:
     # first_letter = word[0]
     word_length = len(word)
+    word_length = 17 if word_length>=17 else word_length
+    word_length = 3 if word_length<=3 else word_length
     # hash_value = mmh3.hash(word)
-    if 3<=word_length<=16:
+    if 4<=word_length<=12:
         # first_letter=1 if word[0]<'m' else 2
         # if 5<=word_length<=14:
         # first_letter= 1 if word[0]<'f' else 2 if word[0]<'m' else 3 if word[0]<'u' else 4
-        first_letter=mmh3.hash(word)%10
+        first_letter=mmh3.hash(word)%buckets[word_length]
         # first_letter=''
 
     else:
@@ -29,11 +52,13 @@ for word in english_words:
     word_distribution[key] += 1
 
 # Following Brevity law see: https://en.wikipedia.org/wiki/Brevity_law
-# for item in word_distribution.items():
-    # word_distribution[item[0]]=item[1]/int(item[0].split('_')[0])
+for item in word_distribution.items():
+    # word_distribution[item[0]]=item[1]/int(item[0].split('_')[0])*3
+    word_distribution[item[0]]=item[1]/int(item[0].split('_')[0])/BUCKET_SIZE
+    # word_distribution[item[0]]=item[1]/BUCKET_SIZE
 #our distribution must have constant product of le
 
-sorted_data = dict(sorted(word_distribution.items(), key=lambda item: item[1], reverse=True))
+sorted_data = dict(sorted(word_distribution.items(), key=lambda item: int(item[0].split('_')[0]), reverse=False))
 
 file_path = "lenght_word_distribution.json"
 
