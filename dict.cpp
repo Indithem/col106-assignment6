@@ -15,14 +15,17 @@ void Dict::insert_sentence(int& book_code, int& page, int& paragraph, int& sente
     string word;
     size_t start=0;
     size_t end;
+    size_t length=sentence.length();
 
-     while (start < sentence.length()) {
+     while (start < length) {
         end = sentence.find_first_of(seperator, start);
 
         if (end == std::string::npos) {
             word = sentence.substr(start);
+            start=length;
         } else {
             word = sentence.substr(start, end - start);
+            start=end+1;
         }
 
         for(char&c :word){
@@ -31,8 +34,6 @@ void Dict::insert_sentence(int& book_code, int& page, int& paragraph, int& sente
 
         dictionary.increment(word);
 
-        // Update the start position for the next iteration
-        start = end + 1;
     }
 
     return;
@@ -182,11 +183,8 @@ MainDict::~MainDict(){
 inline void get_probe(unsigned& probe, unsigned& h, string& s){
     h = murmurhash(s);
     constexpr size_t max= sizeof(bucket_size)/sizeof(unsigned);
-    constexpr unsigned t = bucket(0);
     unsigned size = bucket(s.length());
     probe = cumulative_index_sum(s.length())+h%size;
-
-
 }
 
 void MainDict::insert(string& s){
@@ -219,7 +217,7 @@ unsigned MainDict::get_count(string& s){
         data[probe]= new WordsDict;
     }
 
-    data[probe]->get_count(s,h);
+    return data[probe]->get_count(s,h);
 }
 
 void MainDict::dump(string& file){

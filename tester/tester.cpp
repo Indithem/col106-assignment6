@@ -78,10 +78,12 @@ int main() {
             if(d.get_word_count(key) != value) {
                 cout << "Expected count for word " << key << ": " << value << ", received: " << d.get_word_count(key) << endl;
                 passed = false; 
-                break;
+                // break;
             }
         }
     }
+
+    d.dump_dictionary("test.txt");
 
     if (passed) {
         cout << "Passed" << endl;
