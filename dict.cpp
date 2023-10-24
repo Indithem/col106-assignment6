@@ -23,7 +23,44 @@ void Dict::dump_dictionary(string filename){
     // Implement your function here  
     return;
 }
-int unsigned murmurhash(const std::string&){}
+int unsigned murmurhash(const std::string&s){
+    unsigned int length=s.size();
+    unsigned int no_of_iterations=length/4;
+    constexpr unsigned int constant1=0xcc9e2d51;
+    constexpr unsigned int constant2=0x1b873593;
+    unsigned int left_rotation_const1=15;
+    unsigned int left_rotation_const2=13;
+    unsigned int final_hash=seed;
+    unsigned int mult_constant=5;
+    unsigned int add_constant=0xe6546b64;
+    unsigned int temp_variable;
+    unsigned int remaining_bytes_temp_variable;
+    for(int i=0;i<no_of_iterations;i++){
+        temp_variable=(s[4*i]<<24)+(s[4*i+1]<<16)+(s[4*i+2]<<8)+s[4*i+3];
+        temp_variable=temp_variable*constant1;
+        temp_variable=_rotl(temp_variable,left_rotation_const1);
+        temp_variable=temp_variable*constant2;
+        final_hash=final_hash ^ temp_variable;
+        final_hash=_rotl(final_hash,left_rotation_const2);
+        final_hash=(final_hash*mult_constant)+add_constant;
+    }
+    int temp_re_bits=0;
+    for(int i=0;i<length%4;i++){
+        temp_re_bits=temp_re_bits<<8;
+        temp_re_bits=temp_re_bits | s[length-(length%4)+i];
+    }
+    temp_re_bits=temp_re_bits*constant1;
+    temp_re_bits=_rotl(temp_re_bits,left_rotation_const1);
+    temp_re_bits=temp_re_bits*constant2;
+    final_hash=final_hash ^ temp_re_bits;
+    final_hash=final_hash ^ length;
+    final_hash=final_hash^(final_hash>>16);
+    final_hash*=0x85ebca6b;
+    final_hash^=final_hash>>13;
+    final_hash=final_hash*0xc2b2ae35;
+    final_hash^=final_hash>>16;
+    return final_hash;
+}
 
 
 Node::Node(std::string& s){
