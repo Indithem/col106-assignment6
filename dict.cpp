@@ -18,15 +18,34 @@ void Dict::insert_sentence(int& book_code, int& page, int& paragraph, int& sente
     size_t length=sentence.length();
 
      while (start < length) {
-        end = sentence.find_first_of(seperator, start);
+        /*invariants
+            we dont know if we need to include whatever is present at start
+        */
 
-        if (end == std::string::npos) {
-            word = sentence.substr(start);
-            start=length;
-        } else {
-            word = sentence.substr(start, end - start);
-            start=end+1;
+
+        bool cont=true;
+        for(end=start; end<length and cont; end++ ){
+            /*invariants
+                idk if [end] is a seperator
+            */
+            char letter = sentence[end];
+            for(const char&c :seperator)
+                {if(c==letter)
+                {cont=false;break;}}
         }
+        end+=cont;
+        /*
+            [end-1] is a seperator or the end of word but not both,
+            end-1 could be start
+
+            [][][][][][][][start]...end
+        */
+
+        word = sentence.substr(start, end - start-1);
+        start=end;
+        
+
+        if(word.empty()){continue;}
 
         for(char&c :word){
             c=tolower(c);
@@ -47,6 +66,11 @@ void Dict::dump_dictionary(string filename){
     // Implement your function here  
     return dictionary.dump(filename);
 }
+
+unsigned int inline rotl(const unsigned& x, const unsigned n){
+    return (x<<n) | (x>> (sizeof(unsigned)*8-n));
+}
+
 int unsigned murmurhash(const std::string&s){
     unsigned int length=s.size();
     unsigned int no_of_iterations=length/4;
@@ -62,10 +86,10 @@ int unsigned murmurhash(const std::string&s){
     for(int i=0;i<no_of_iterations;i++){
         temp_variable=(s[4*i]<<24)+(s[4*i+1]<<16)+(s[4*i+2]<<8)+s[4*i+3];
         temp_variable=temp_variable*constant1;
-        temp_variable=__rotl(temp_variable,left_rotation_const1);
+        temp_variable=rotl(temp_variable,left_rotation_const1);
         temp_variable=temp_variable*constant2;
         final_hash=final_hash ^ temp_variable;
-        final_hash=__rotl(final_hash,left_rotation_const2);
+        final_hash=rotl(final_hash,left_rotation_const2);
         final_hash=(final_hash*mult_constant)+add_constant;
     }
     int temp_re_bits=0;
@@ -74,7 +98,7 @@ int unsigned murmurhash(const std::string&s){
         temp_re_bits=temp_re_bits | s[length-(length%4)+i];
     }
     temp_re_bits=temp_re_bits*constant1;
-    temp_re_bits=__rotl(temp_re_bits,left_rotation_const1);
+    temp_re_bits=rotl(temp_re_bits,left_rotation_const1);
     temp_re_bits=temp_re_bits*constant2;
     final_hash=final_hash ^ temp_re_bits;
     final_hash=final_hash ^ length;
@@ -106,12 +130,12 @@ WordsDict::~WordsDict(){
     }
 }
 
-void WordsDict::insert(std::string& s,unsigned &h){
+void WordsDict::insert(std::string& s,unsigned h){
     unsigned pos = h%WordsDict_BUCKET;
     if (data[pos]==nullptr){data[pos]=new Node{s};}
 }
 
-void WordsDict::increment(std::string& s,unsigned &h){
+void WordsDict::increment(std::string& s,unsigned h){
     unsigned pos = h%WordsDict_BUCKET;
     if (data[pos]==nullptr){
         data[pos]=new Node{s};
@@ -123,11 +147,12 @@ void WordsDict::increment(std::string& s,unsigned &h){
     m=data[pos];
     while(m and *(m->name)!=s){p=m,m=m->next;}
 
+    // if(s=="008"){cout<<*(p->name);}
     if(m){m->count+=1;return;}
     else{p->next=new Node{s};p->next->count=1;}
 }
 
-unsigned WordsDict::get_count(std::string& s,unsigned &h){
+unsigned WordsDict::get_count(std::string& s,unsigned h){
     unsigned pos = h%WordsDict_BUCKET;
     if (data[pos]==nullptr){
         return 0;
@@ -144,8 +169,9 @@ unsigned WordsDict::get_count(std::string& s,unsigned &h){
 
 void WordsDict::dump(std::ofstream& out){
     for(Node* n:data){
-        if(n){
+        while(n){
             out<<*(n->name)<<", "<<n->count<<'\n';
+            n=n->next;
         }
     }
 }
@@ -154,7 +180,7 @@ void WordsDict::dump(std::ofstream& out){
 constexpr unsigned cumulative_index_sum(unsigned idx){
     unsigned a=0;
     unsigned i=0;
-    idx = min(idx,(unsigned)(sizeof(bucket_size)/sizeof(unsigned)));
+    idx = min(idx,(unsigned)(sizeof(bucket_size)/sizeof(unsigned)-1));
     for( ;i<idx; i++){
         a+=bucket_size[i];
     }
@@ -170,8 +196,8 @@ constexpr unsigned bucket(unsigned i){
 
 MainDict::MainDict(){
     constexpr unsigned max= sizeof(bucket_size)/sizeof(unsigned);
-    data.reserve(cumulative_index_sum(max));
-    data.assign(cumulative_index_sum(max),nullptr);
+    data.reserve(cumulative_index_sum(max)+1);
+    data.assign(cumulative_index_sum(max)+1,nullptr);
 }
 
 MainDict::~MainDict(){
@@ -182,7 +208,6 @@ MainDict::~MainDict(){
 
 inline void get_probe(unsigned& probe, unsigned& h, string& s){
     h = murmurhash(s);
-    constexpr size_t max= sizeof(bucket_size)/sizeof(unsigned);
     unsigned size = bucket(s.length());
     probe = cumulative_index_sum(s.length())+h%size;
 }
@@ -231,3 +256,10 @@ void MainDict::dump(string& file){
     }
 
 }
+
+
+// int main(){
+//     MainDict m;
+//     string s="008";
+//     m.increment(s);
+// }

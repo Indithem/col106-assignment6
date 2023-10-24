@@ -83,8 +83,6 @@ int main() {
         }
     }
 
-    d.dump_dictionary("test.txt");
-
     if (passed) {
         cout << "Passed" << endl;
     } else {

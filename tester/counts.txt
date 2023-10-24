@@ -1,6 +1,6 @@
 anchor, 6
 ancient, 8
-and, 4516
+and, 4510
 anglo, 16
 angry, 7
 anguish, 2
@@ -22,14 +22,14 @@ camp, 2
 campaign, 2
 campbell, 13
 camroodeen, 11
-can, 419
+can, 418
 chapter, 22
-character, 27
+character, 26
 characteristic, 5
-christians, 11
+christians, 10
 christmas, 4
 colonists, 49
-colony, 404
+colony, 402
 colour, 30
 consent, 31
 consequence, 3
@@ -46,7 +46,7 @@ dinner, 62
 disposition, 4
 disprove, 5
 dispute, 4
-disqualification, 7
+disqualification, 6
 doings, 3
 doled, 1
 domain, 1
@@ -56,7 +56,7 @@ editorial, 1
 education, 54
 educational, 14
 every, 185
-everybody, 6
+everybody, 5
 examinations, 17
 examine, 7
 expensive, 14
@@ -72,7 +72,7 @@ fish, 10
 madden, 5
 made, 186
 madness, 2
-madras, 55
+madras, 54
 materialistic, 1
 materially, 13
 materials, 4

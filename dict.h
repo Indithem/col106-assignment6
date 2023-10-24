@@ -44,10 +44,10 @@ public:
 
 public:
     WordsDict();
-    void insert(std::string&,unsigned &h);
-    void increment(std::string&,unsigned &h);
+    void insert(std::string&,unsigned h);
+    void increment(std::string&,unsigned h);
     void dump(std::ofstream&);
-    unsigned get_count(std::string&,unsigned &h);
+    unsigned get_count(std::string&,unsigned h);
     ~WordsDict();
 };
 
