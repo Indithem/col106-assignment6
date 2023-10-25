@@ -5,17 +5,17 @@
 #include <fstream>
 using namespace std;
 struct Trie_Node;
-class Hash_table{
-    public:
-        vector<Trie_Node*>children_hash_table;
-        constexpr static unsigned int size_of_children_hash_table=256;
-        Hash_table();
-        ~Hash_table();
-};
+// class Hash_table{
+//     public:
+//         vector<Trie_Node*>children_hash_table;
+//         constexpr static unsigned int size_of_children_hash_table=256;
+//         Hash_table();
+//         ~Hash_table();
+// };
 struct Trie_Node{
-    bool Word_Ending;
-    unsigned int count;
-    Hash_table*children;
+    public:
+        unsigned int count;
+        Trie_Node* children_array[256];
         Trie_Node();
         ~Trie_Node();
 };
