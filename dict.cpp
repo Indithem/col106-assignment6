@@ -116,6 +116,7 @@ Node::Node(std::string& s){
 }
 
 Node::~Node(){
+    delete next;
     delete name;
 }
 
