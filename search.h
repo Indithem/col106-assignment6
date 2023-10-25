@@ -10,15 +10,15 @@ int unsigned murmurhash(const std::string&);
 
 struct LinkedNode{
     LinkedNode* next=nullptr;
-    int offsetof;
+    int offset;
     LinkedNode()=delete;
-    LinkedNode(size_t);
-    ~LinkedNode();
+    LinkedNode(int a):offset(a){};
+    ~LinkedNode(){delete next;};
 };
 
 class SentenceHashTable{
 private:
-    constexpr static unsigned HASHTABLE_SIZE=256;
+    constexpr static unsigned HASHTABLE_SIZE=sizeof(char);
 
     vector<LinkedNode*> table;
     int book_code=0;
@@ -28,7 +28,7 @@ private:
 public:
     string sentence;
     SentenceHashTable() = delete;
-    SentenceHashTable(string& sentence,int book_cod, int pag, int paragrap, int sentence_n);
+    SentenceHashTable(const string& sentence,int book_cod, int pag, int paragrap, int sentence_n);
     LinkedNode* get_node(char);
     ~SentenceHashTable();
 };
