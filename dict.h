@@ -15,7 +15,7 @@ struct Trie_Node;
 struct Trie_Node{
     public:
         unsigned int count;
-        Trie_Node* children_array[256];
+        Trie_Node* children_array[256]{nullptr};
         Trie_Node();
         ~Trie_Node();
 };
