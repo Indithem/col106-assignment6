@@ -10,6 +10,7 @@
 //     }
 // }
 Trie_Node::Trie_Node(){
+    children_array = new Trie_Node* [256]{nullptr};
     count=0;
 }
 Trie_Node::~Trie_Node(){

@@ -4,18 +4,10 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-struct Trie_Node;
-// class Hash_table{
-//     public:
-//         vector<Trie_Node*>children_hash_table;
-//         constexpr static unsigned int size_of_children_hash_table=256;
-//         Hash_table();
-//         ~Hash_table();
-// };
+
 struct Trie_Node{
-    public:
         unsigned int count;
-        Trie_Node* children_array[256]{nullptr};
+        Trie_Node** children_array;
         Trie_Node();
         ~Trie_Node();
 };
