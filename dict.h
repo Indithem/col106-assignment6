@@ -12,20 +12,20 @@ class Hash_table{
         ~Hash_table();
 };
 class Trie_Node{
-    bool Word_Ending;
-    unsigned int count;
-    Hash_table*children;
     public:
+        bool Word_Ending;
+        unsigned int count;
+        Hash_table*children;
         Trie_Node();
         ~Trie_Node();
 };
 class Trie_of_dictionary{
-    Trie_Node*root;
     public:
+        Trie_Node*root;
         Trie_of_dictionary();
         ~Trie_of_dictionary();
         void insert(string word_in_sentence);
-        int search(string word);
+        unsigned int search(string word);
 };
 
 class Dict {
