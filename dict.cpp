@@ -120,7 +120,7 @@ void Dict::dump_dictionary(string fp){
     stack.push_back(dict.root);
     //assume we visited/printed all elements in stack
 
-    char i=0; //currently visiting i
+    unsigned i=0; //currently visiting i
 
     while(!stack.empty())
     {
