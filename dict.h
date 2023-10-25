@@ -46,7 +46,7 @@ public:
 
     unsigned get_word_count(const string& word);
 
-    void dump_dictionary(string& filename);
+    void dump_dictionary(string filename);
 
     /* -----------------------------------------*/
 };

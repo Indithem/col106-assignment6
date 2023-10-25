@@ -109,7 +109,7 @@ unsigned Dict::get_word_count(const string& word){
     return dict.search(word);
 }
 
-void Dict::dump_dictionary(string& fp){
+void Dict::dump_dictionary(string fp){
     ofstream out;
     out.open(fp,ios_base::out);
 
