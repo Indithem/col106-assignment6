@@ -25,7 +25,32 @@ Node* SearchEngine::search(string pattern, int& n_matches){
         LinkedNode* n = sentence->get_node(s1);
         while (n!=nullptr)
         {
-            string sub = 
+            string sub = sentence->sentence.substr(n->offset,lenght);
+            if(lenght==sub.length() and pattern_hash==murmurhash(sub) and pattern==sub){
+                if (start==nullptr){start=new Node{
+                    sentence->book_code,
+                    sentence->page,
+                    sentence->paragraph,
+                    sentence->sentence_no,
+                    n->offset
+                };
+                    start->left=nullptr;
+                    start->right=nullptr;
+                }
+
+                else{
+                    start->left=new Node{
+                    sentence->book_code,
+                    sentence->page,
+                    sentence->paragraph,
+                    sentence->sentence_no,
+                    n->offset
+                };
+                    start->left->right=start;
+                    start->left->left=nullptr;
+                    start=start->left;
+                }
+            }
             n=n->next;
         }
         
@@ -106,20 +131,3 @@ LinkedNode* SentenceHashTable::get_node(char x){
     unsigned int index=x;
     return table[index];
 }
-// class SentenceHashTable{
-// private:
-//     constexpr static unsigned HASHTABLE_SIZE=sizeof(char)*256;
-// 
-//     vector<LinkedNode*> table;
-// public:
-//     int book_code=0;
-// 
-//     int page=0;
-//     int paragraph=0;
-//     int sentence_no=0;
-//     string sentence;
-//     SentenceHashTable() = delete;
-//     SentenceHashTable(const string& sentence,int book_cod, int pag, int paragrap, int sentence_n);
-//     LinkedNode* get_node(char);
-//     ~SentenceHashTable();
-// };

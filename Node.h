@@ -4,8 +4,8 @@ using namespace std;
 
 class Node {
 public: 
-    Node* left;
-    Node* right;
+    Node* left=nullptr; //prev
+    Node* right=nullptr; //next
 
     int book_code;
     int page;
@@ -13,6 +13,7 @@ public:
     int sentence_no;
     int offset;
 
-    Node();
+    Node()=delete;
+    ~Node();
     Node(int b_code, int pg, int para, int s_no, int off);
 };
