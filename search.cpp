@@ -76,3 +76,50 @@ int unsigned murmurhash(const std::string&s){
     final_hash^=final_hash>>16;
     return final_hash;
 }
+SentenceHashTable::SentenceHashTable(const string& sentence1,int book_cod, int pag, int paragrap, int sentence_n){
+    table.resize(HASHTABLE_SIZE,nullptr);
+    unsigned int index;
+    LinkedNode*temp;
+    book_code=book_cod;
+    page=pag;
+    paragraph=paragrap;
+    sentence_no=sentence_n;
+    sentence=sentence1;
+    for(int i=0;i<sentence.size();i++){
+        index=sentence[i];
+        if(table[index]==nullptr){
+            table[index]=new LinkedNode(i);;
+        }
+        else{
+            temp=new LinkedNode(i);
+            temp->next=table[index];
+            table[index]=temp;  
+        }
+    }
+}
+SentenceHashTable::~SentenceHashTable(){
+    for(int i=0;i<table.size();i++){
+        delete table[i];
+    }
+}
+LinkedNode* SentenceHashTable::get_node(char x){
+    unsigned int index=x;
+    return table[index];
+}
+// class SentenceHashTable{
+// private:
+//     constexpr static unsigned HASHTABLE_SIZE=sizeof(char)*256;
+// 
+//     vector<LinkedNode*> table;
+// public:
+//     int book_code=0;
+// 
+//     int page=0;
+//     int paragraph=0;
+//     int sentence_no=0;
+//     string sentence;
+//     SentenceHashTable() = delete;
+//     SentenceHashTable(const string& sentence,int book_cod, int pag, int paragrap, int sentence_n);
+//     LinkedNode* get_node(char);
+//     ~SentenceHashTable();
+// };

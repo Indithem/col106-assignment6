@@ -29,7 +29,7 @@ public:
     int sentence_no=0;
     string sentence;
     SentenceHashTable() = delete;
-    SentenceHashTable(const string& sentence,int book_cod, int pag, int paragrap, int sentence_n);
+    SentenceHashTable(const string& sentence1,int book_cod, int pag, int paragrap, int sentence_n);
     LinkedNode* get_node(char);
     ~SentenceHashTable();
 };
