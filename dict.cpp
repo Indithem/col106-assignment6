@@ -28,19 +28,20 @@ void Trie_of_dictionary::insert(const string& word_in_sentence){
     Trie_Node*temp_root=root;
     unsigned int index;
     Trie_Node*insertor;
-    for(int i=0;i<word_in_sentence.size()-1;i++){
+    unsigned int size=word_in_sentence.size();
+    for(int i=0;i<size-1;i++){
         index=word_in_sentence[i];
         if(temp_root->children_array[index]==nullptr){
-            insertor=new Trie_Node();
-            temp_root->children_array[index]=insertor;
+            // insertor=new Trie_Node();
+            temp_root->children_array[index]=new Trie_Node();
         }
         temp_root=temp_root->children_array[index];
     }
     index=word_in_sentence[word_in_sentence.size()-1];
     if(temp_root->children_array[index]==nullptr){
-        insertor=new Trie_Node();
-        insertor->count=1;
-        temp_root->children_array[index]=insertor;
+        temp_root->children_array[index]=new Trie_Node();
+        // insertor=new Trie_Node();
+        temp_root->children_array[index]->count=1;
     }
     else{
         temp_root->children_array[index]->count+=1;
@@ -49,7 +50,8 @@ void Trie_of_dictionary::insert(const string& word_in_sentence){
 unsigned int Trie_of_dictionary::search(const string& word){
     Trie_Node*temp_root=root;
     unsigned int index;
-    for(int i=0;i<word.size();i++){
+    unsigned int size=word.size();
+    for(int i=0;i<size;i++){
         index=word[i];
         if(temp_root->children_array[index]==nullptr){
             return 0;
