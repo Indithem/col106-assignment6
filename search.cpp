@@ -12,10 +12,16 @@ SearchEngine::~SearchEngine(){
 }
 
 void SearchEngine::insert_sentence(int book_code, int page, int paragraph, int sentence_no, string sentence){
+    for(char&c: sentence){
+        c=tolower(c);
+    }
     sentences.push_back(new SentenceHashTable{sentence,book_code,page,paragraph,sentence_no});
 }
 
 Node* SearchEngine::search(string pattern, int& n_matches){
+    for(char&c: pattern){
+        c=tolower(c);
+    }
     n_matches=0;
     Node *start=nullptr;
     const unsigned pattern_hash = murmurhash(pattern);
